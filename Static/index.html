@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BrandGuard incident desk</title>
 <style>
-:root{--bg:#f7f8fb;--card:#fff;--ink:#111827;--mute:#6b7280;--line:#e5e7eb;--acc:#4f46e5;--acc-ink:#fff;--side:#0f172a;--side-ink:#cbd5e1;--side-on:#1e293b;
---amber:#b45309;--amber-bg:#fef3c7;--red:#dc2626;--red-bg:#fee2e2;--blue:#1d4ed8;--blue-bg:#dbeafe;--green:#15803d;--green-bg:#dcfce7;--purple:#7e22ce;--purple-bg:#f3e8ff;--grey-bg:#f1f3f6;--r:10px}
-@media (prefers-color-scheme:dark){:root{--bg:#0b1020;--card:#151b2e;--ink:#e8edf6;--mute:#93a0b5;--line:#252d44;--acc:#8b86ff;--acc-ink:#0b1020;--side:#070b17;--side-on:#16203a;
---amber:#fbbf24;--amber-bg:#3a2a0a;--red:#f87171;--red-bg:#3b1414;--blue:#93b4ff;--blue-bg:#1b2a52;--green:#86efac;--green-bg:#0f2f1b;--purple:#d8b4fe;--purple-bg:#2b1a45;--grey-bg:#1d2540}}
+:root{color-scheme:dark;--bg:#071322;--card:#0f2540;--ink:#eaf2f9;--mute:#9fb3c8;--line:#1e3a5a;--acc:#14b8a6;--acc-ink:#04211e;--side:#050e19;--side-ink:#b9cadb;--side-on:#10294a;
+--amber:#fbbf24;--amber-bg:#3a2c0b;--red:#fb7185;--red-bg:#3d1620;--blue:#7cc4ff;--blue-bg:#12304f;--green:#4ade80;--green-bg:#0f3322;--purple:#c4b5fd;--purple-bg:#2a2250;--grey-bg:#14304f;--r:14px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 a{color:var(--acc)}
@@ -117,6 +115,46 @@ table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:7px 8px;
  aside .brand{padding:4px 8px}.grp,aside .bottom .autorow span{display:none}aside nav{display:flex;flex-wrap:wrap;gap:2px}aside .bottom{margin:0 0 0 auto;border:0;padding:0;display:flex;align-items:center}
  main{padding:16px}.top{padding:10px 16px}.top input{max-width:none;flex-basis:100%}.f .two{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+body{background:radial-gradient(1200px 600px at 85% -10%,#0d3a45 0%,transparent 60%),radial-gradient(900px 500px at -10% 110%,#10294a 0%,transparent 55%),var(--bg);background-attachment:fixed;letter-spacing:.005em}
+h1{font-family:Cambria,Georgia,"Times New Roman",serif;font-size:30px;letter-spacing:-.01em}
+h2{font-size:16px;letter-spacing:.01em}
+.logo{background:linear-gradient(135deg,#14b8a6,#2dd4bf);color:#04211e;font-weight:800;box-shadow:0 4px 14px rgba(20,184,166,.35)}
+.brand{font-family:Cambria,Georgia,serif;font-size:19px}
+aside{border-right:1px solid var(--line)}
+aside nav a{transition:background .15s,transform .15s}aside nav a:hover{transform:translateX(2px)}
+aside nav a.on{background:linear-gradient(90deg,rgba(20,184,166,.22),transparent);border-left:3px solid var(--acc);color:#fff}
+.top{background:rgba(7,19,34,.75);backdrop-filter:blur(8px);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line)}
+.top input{background:var(--card)}
+.btn{border-radius:10px;transition:transform .12s,box-shadow .12s,background .12s}
+.btn:hover{transform:translateY(-1px)}
+.btn.pri{background:linear-gradient(135deg,#14b8a6,#2dd4bf);border:0;color:#04211e;font-weight:700;box-shadow:0 6px 18px rgba(20,184,166,.28)}
+.stat,.card,.panel{box-shadow:0 8px 28px rgba(0,0,0,.28);border-color:var(--line)}
+.stat{position:relative;overflow:hidden;transition:transform .15s,border-color .15s}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--mute)}
+.stat:hover{transform:translateY(-3px)}
+.stat[data-go=decide]::before{background:var(--amber)}.stat[data-go=escalated]::before{background:var(--red)}.stat[data-go=monitoring]::before{background:var(--purple)}.stat[data-go=resolved]::before{background:var(--green)}
+.ico{font-size:18px}.stat b{font-size:40px;font-family:Cambria,Georgia,serif;font-weight:700}
+.stat span.l{font-size:13px}
+.panel .inc{transition:background .12s}
+.pill{border-radius:99px;padding:2px 10px}
+.now{border:2px solid var(--acc);box-shadow:0 0 0 4px rgba(20,184,166,.12),0 12px 36px rgba(0,0,0,.35)}
+.step{border-top-width:5px;border-radius:3px}
+.draft{border:1px dashed var(--line);background:#0b1f36}
+.banner{border:1px solid rgba(251,191,36,.35)}
+.kpi{background:linear-gradient(160deg,#12304f,#0e2540);border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi b{font-family:Cambria,Georgia,serif;font-size:28px;color:#fff}
+.kpi span{display:block;font-size:13px;color:var(--ink);margin-top:2px}.kpi small{display:block;color:var(--mute);font-size:11.5px;margin-top:2px}
+.kpi.good b{color:var(--acc)}.kpi.warn b{color:var(--amber)}
+.kgroup{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--acc);margin:18px 0 8px;font-weight:700}
+.mix{margin:0 0 26px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mix .card{margin:0}
+.seg{display:flex;height:16px;border-radius:99px;overflow:hidden;background:var(--grey-bg);margin:12px 0 10px}
+.seg i{display:block;height:100%;transition:width .5s}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--mute)}
+.legend b{color:var(--ink)}.legend u{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;text-decoration:none}
+.tag-s{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:6px}
+@media (max-width:900px){.mix{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -244,6 +282,19 @@ document.addEventListener('click',async e=>{
     area.querySelector('#rc').onclick=()=>area.innerHTML='';area.querySelector('#ro').onclick=()=>send({action:'reject',notes:area.querySelector('input').value})}});
 
 // ----- dashboard
+
+function mixPanel(d){
+  const c=d.counts, T={S1:0,S2:0,S3:0,S4:0};let nt=0;d.items.forEach(i=>{if(i.tier&&T[i.tier]!==undefined){T[i.tier]++;nt++}});
+  const tc={S1:'#fb7185',S2:'#fbbf24',S3:'#7cc4ff',S4:'#9fb3c8'}, tn={S1:'S1 most serious',S2:'S2 serious',S3:'S3 moderate',S4:'S4 low'};
+  const bc={decide:'#fbbf24',escalated:'#fb7185',monitoring:'#c4b5fd',resolved:'#4ade80'};
+  const tot=Math.max(c.all,1);
+  const seg=(vals,cols)=>Object.keys(vals).map(k=>`<i style="width:${(vals[k]/Math.max(Object.values(vals).reduce((a,b)=>a+b,0),1)*100).toFixed(2)}%;background:${cols[k]}"></i>`).join('');
+  const leg=(vals,cols,names)=>Object.keys(vals).map(k=>`<span><u style="background:${cols[k]}"></u>${esc(names[k])} <b>${vals[k]}</b></span>`).join('');
+  const st={decide:c.decide,escalated:c.escalated,monitoring:c.monitoring,resolved:c.resolved};
+  return `<div class="mix"><div class="card"><h2>How serious are the incidents?</h2><div class="meta">Priority tier given by the severity score (${nt} scored)</div>
+   <div class="seg">${seg(T,tc)}</div><div class="legend">${leg(T,tc,tn)}</div></div>
+  <div class="card"><h2>Where do incidents stand?</h2><div class="meta">${tot} incident${tot===1?'':'s'} in total</div>
+   <div class="seg">${seg(st,bc)}</div><div class="legend">${leg(st,bc,BS)}</div></div></div>`}
 function incRow(it){return `<div class="inc" data-open="${esc(it.case_id)}"><span class="dot ${it.bucket}"></span>
   <div class="m"><b>${esc(it.headline)}</b><span class="meta">${esc(it.case_id)} • ${esc(it.platform)} • ${when(it.timestamp)}</span><span class="meta" style="display:block;white-space:normal">${esc(it.summary)}</span></div>
   ${it.tier?`<span class="pill p-${it.tier}">${esc(it.priority)}</span>`:it.withheld?'<span class="pill flag">Needs review</span>':''}<span class="pill b-${it.bucket}">${esc(BS[it.bucket]||it.bucket)}</span><span class="chev">›</span></div>`}
@@ -258,6 +309,7 @@ async function dashboard(){
   app.innerHTML=`<div class="head"><div><h1>Dashboard</h1><p class="lede">${c.decide?`${c.decide} incident${c.decide>1?'s need':' needs'} your decision.`:'Nothing is waiting on you.'}</p></div></div>
   <div class="stats">${['decide','escalated','monitoring','resolved'].map(k=>`<button class="stat" data-go="${k}"><div class="t"><span class="ico i-${k}">${ICON[k]}</span><span class="pill b-${k}">${TAG[k]}</span></div><b>${c[k]}</b><span class="l">${BL[k]}</span></button>`).join('')}</div>
   ${need.length?`<div class="sh"><h2>Needs your decision</h2>${c.decide>need.length?`<a href="#/incidents/decide">View all ${c.decide}</a>`:''}</div>${need.map(it=>`<div class="card" data-open="${esc(it.case_id)}"><div class="row"><b>${esc(it.headline)}</b><span class="meta">${esc(it.case_id)} • ${esc(it.platform)}</span><span class="pill p-${it.tier||'S4'}">${esc(it.priority||'Review')}</span></div>${decisionCard(it,false)}</div>`).join('')}`:''}
+  ${mixPanel(d)}
   <div class="two-col"><div><div class="sh"><h2>Recent incidents</h2><a href="#/incidents/all">View all</a></div><div class="panel">${recent.map(incRow).join('')}</div></div>
    <div><div class="sh"><h2>Activity</h2></div><div class="panel feed">${a.items.length?a.items.map(x=>`<div class="it" data-open="${esc(x.case_id)}"><span class="dot ${x.kind}"></span><div><div>${esc(x.text)}</div><span class="meta">${esc(x.case_id)} • ${when(x.when)}</span></div></div>`).join(''):'<p class="meta">Nothing yet.</p>'}</div></div></div>`;
   app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>location.hash='#/incidents/'+b.dataset.go);
@@ -354,7 +406,7 @@ async function testing(){
   app.innerHTML=`<div class="head"><h1>Testing</h1></div><div class="banner">This area is for demos and evaluation. Simulated time and sample incidents are not real activity.</div>
   <div class="card"><h2>Sample incidents</h2><p class="meta">${s.dataset_loaded?`${s.feed_cursor} of ${s.dataset_rows} sample incidents loaded.`:"The sample dataset wasn't found. Set BG_DATASET to its path."}</p>
    <div class="decide-bar"><button class="btn" data-feed="5">Load 5</button><button class="btn" data-feed="25">Load 25</button><button class="btn" data-feed="100">Load 100</button></div></div>
-  <div class="card"><h2>Evaluation</h2><p class="meta">Process all ${s.dataset_rows||400} sample incidents from scratch and compare the results with the expected outcomes.</p>
+  <div class="card"><h2>Evaluation</h2><p class="meta">Process all ${s.dataset_rows||400} sample incidents from scratch and compare the results with the expected outcomes. Afterwards no case waits for a decision, because the simulated approvers have already answered. For a live demo use Clear all, then Load 25.</p>
    <div class="decide-bar"><button class="btn" id="runAll">Run full evaluation</button><a class="btn" href="/api/export">Download results (Excel)</a></div><div id="kp"></div></div>
   <div class="card"><h2>Simulated time</h2><p class="meta">Now: ${when(s.clock)}. Move time forward to trigger approval reminders and follow-up windows.</p>
    <div class="decide-bar"><button class="btn" data-adv='{"minutes":30}'>+30 minutes</button><button class="btn" data-adv='{"hours":1}'>+1 hour</button><button class="btn" data-adv='{"hours":24}'>+1 day</button></div></div>
@@ -366,8 +418,28 @@ async function testing(){
   kpis()}
 async function kpis(){
   const el=$('#kp');if(!el)return;const r=await J('/api/kpis');if(!r.ok||r.empty||!r.kpis){el.innerHTML='';return}
-  const items=Object.entries(r.kpis).filter(([k,v])=>typeof v==='number'||typeof v==='string').slice(0,12);
-  el.innerHTML=`<div class="kpis" style="margin-top:12px">${items.map(([k,v])=>`<div class="kpi"><b>${typeof v==='number'&&v<=1&&v>=0&&/rate|accuracy|precision|recall|pct/i.test(k)?(v*100).toFixed(1)+'%':esc(typeof v==='number'?Math.round(v*100)/100:v)}</b><span>${esc(k.replace(/_/g,' '))}</span></div>`).join('')}</div>`}
+  const K=r.kpis, pc=(v,d=1)=>(v*100).toFixed(d)+'%', full=K.n_cases>=400;
+  const card=(val,label,sub,cls='')=>`<div class="kpi ${cls}"><b>${val}</b><span>${esc(label)}</span><small>${esc(sub)}</small></div>`;
+  const nb=K.n_base, s12=Math.round(K.s1_s2_recall_strict_tier*K.s1_s2_n), slaHit=Math.round(K.sla_adherence*K.sla_n);
+  const g=(t,body)=>`<div class="kgroup">${t}</div><div class="kpis">${body}</div>`;
+  el.innerHTML=`<p class="meta" style="margin-top:14px">${full?'Full evaluation: all '+K.n_cases+' test incidents ('+nb+' base incidents plus '+K.n_updates+' follow-ups).':'These figures describe only the '+K.n_cases+' incidents loaded now. Click Run full evaluation for all 400.'} Everything here is simulated test data.</p>`+
+   g('Did it get things right?',
+     card(pc(K.type_accuracy),'Incident type correct','of '+nb+' base incidents','good')+
+     card(pc(K.severity_accuracy_all_first_decision),'Severity level matches','of '+nb+' base incidents','good')+
+     card(pc(K.verification_accuracy),'Evidence status correct','of '+nb+' base incidents')+
+     card(pc(K.gate_accuracy),'Right sending rule chosen','of '+nb+' base incidents','warn'))+
+   g('Did it stay safe and involve people?',
+     card(pc(K.s1_s2_recall_strict_tier,2),'Serious cases caught','strict S1/S2 recall: '+s12+' of '+K.s1_s2_n,'warn')+
+     card(K.unsupported_statements_in_sent_text+' of '+K.texts_sent,'Unsupported statements','in simulated outputs','good')+
+     card(K.hard_gate_violations,'Hard-rule breaches','public text that should have been blocked','good')+
+     card(K.exception_handled+' of '+K.exception_cases,'Exceptions handled','tool failures, injection and similar','good')+
+     card(K.whatif_applied+' of '+K.whatif_cases,'Follow-up updates applied','new posts, new evidence','good'))+
+   g('Is the process quick and recorded?',
+     card(K.audit_complete+' of '+K.audit_total,'Complete audit records','every step logged','good')+
+     card(pc(K.sla_adherence,2),'Replies within target time','simulated approvers and clock ('+slaHit+' of '+K.sla_n+')')+
+     card(K.s4_straight_through+' of '+K.s4_cases,'Low-risk replies sent without a person','approved S4 template only')+
+     card(K.human_touchpoints_per_case.toFixed(2),'Human touches per incident','average, '+K.human_touchpoints_total+' in total')+
+     card(pc(K.automation_coverage_stage_share),'Share of work automated','a structural estimate, not a measurement'))}
 
 route();
 </script>

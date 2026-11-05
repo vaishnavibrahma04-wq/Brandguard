@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrandGuard incident desk</title>
+<style>
+:root{--bg:#f7f8fb;--card:#fff;--ink:#111827;--mute:#6b7280;--line:#e5e7eb;--acc:#4f46e5;--acc-ink:#fff;--side:#0f172a;--side-ink:#cbd5e1;--side-on:#1e293b;
+--amber:#b45309;--amber-bg:#fef3c7;--red:#dc2626;--red-bg:#fee2e2;--blue:#1d4ed8;--blue-bg:#dbeafe;--green:#15803d;--green-bg:#dcfce7;--purple:#7e22ce;--purple-bg:#f3e8ff;--grey-bg:#f1f3f6;--r:10px}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1020;--card:#151b2e;--ink:#e8edf6;--mute:#93a0b5;--line:#252d44;--acc:#8b86ff;--acc-ink:#0b1020;--side:#070b17;--side-on:#16203a;
+--amber:#fbbf24;--amber-bg:#3a2a0a;--red:#f87171;--red-bg:#3b1414;--blue:#93b4ff;--blue-bg:#1b2a52;--green:#86efac;--green-bg:#0f2f1b;--purple:#d8b4fe;--purple-bg:#2b1a45;--grey-bg:#1d2540}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{background:var(--side);color:var(--side-ink);padding:16px 12px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:16px;text-decoration:none;padding:4px 8px 18px}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--acc);display:grid;place-items:center;color:#fff;font-size:15px}
+.grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#64748b;padding:14px 10px 6px}
+aside nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--side-ink);text-decoration:none;margin-bottom:2px}
+aside nav a:hover{background:var(--side-on)}
+aside nav a.on{background:var(--side-on);color:#fff;font-weight:600}
+aside nav a .n{margin-left:auto;background:#f59e0b;color:#111;border-radius:99px;font-size:11px;font-weight:700;padding:0 7px}
+aside .bottom{margin-top:auto;border-top:1px solid #1e293b;padding-top:10px}
+.sw{width:34px;height:20px;border-radius:10px;background:#475569;border:0;position:relative;cursor:pointer;padding:0;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked=true]{background:#16a34a}.sw[aria-checked=true]::after{left:16px}
+.autorow{display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:13px}
+.col{min-width:0}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;gap:12px;align-items:center}
+.top input{flex:1;max-width:420px;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 12px}
+.top .sp{flex:1}.top{flex-wrap:wrap}
+main{padding:24px;max-width:1120px}
+h1{font-size:22px;letter-spacing:-.015em;margin:0}
+h2{font-size:15px;margin:0}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.lede{color:var(--mute);margin:2px 0 0}
+.btn{border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:500}
+.btn:hover{background:var(--grey-bg)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.pri:hover{filter:brightness(1.1)}
+.btn.danger{color:var(--red);border-color:var(--red)}
+.btn.sm{padding:4px 10px;font-size:13px}
+.btn:disabled{opacity:.5}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:left;cursor:pointer;display:block;width:100%}
+.stat:hover{border-color:var(--acc)}
+.stat .t{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.ico{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-size:16px}
+.stat b{display:block;font-size:28px;line-height:1.1}
+.stat span.l{color:var(--mute)}
+.i-decide{background:var(--amber-bg);color:var(--amber)}.i-escalated{background:var(--red-bg);color:var(--red)}.i-monitoring{background:var(--blue-bg);color:var(--blue)}.i-resolved{background:var(--green-bg);color:var(--green)}
+.two-col{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px}
+.sh a{font-size:13px;text-decoration:none}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.inc{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.inc:last-child{border-bottom:0}
+.inc:hover{background:var(--grey-bg)}
+.dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--mute)}
+.dot.decide{background:var(--amber)}.dot.escalated{background:var(--red)}.dot.monitoring{background:var(--blue)}.dot.resolved{background:var(--green)}
+.inc .m{flex:1;min-width:0}
+.inc .m b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{color:var(--mute);font-size:12px}
+.inc .chev{color:var(--mute)}
+.pill{display:inline-block;padding:1px 9px;border-radius:6px;font-size:12px;font-weight:600;background:var(--grey-bg);color:var(--mute);white-space:nowrap}
+.p-S1{background:var(--red-bg);color:var(--red)}.p-S2{background:var(--amber-bg);color:var(--amber)}.p-S3{background:var(--blue-bg);color:var(--blue)}.p-S4{background:var(--grey-bg);color:var(--mute)}
+.flag{background:var(--amber-bg);color:var(--amber)}
+.b-decide{background:var(--amber-bg);color:var(--amber)}.b-escalated{background:var(--red-bg);color:var(--red)}.b-monitoring{background:var(--purple-bg);color:var(--purple)}.b-resolved{background:var(--green-bg);color:var(--green)}
+.feed{padding:6px 16px}
+.feed .it{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.feed .it:last-child{border-bottom:0}
+.feed .dot{margin-top:7px}
+.feed .dot.person{background:var(--acc)}.feed .dot.warn{background:var(--amber)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.row{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.quote{border-left:3px solid var(--line);margin:8px 0;padding:2px 12px}
+.sec{margin-top:14px}.sec h3{font-size:12px;margin:0 0 4px;color:var(--mute);font-weight:600}
+ul.plain{margin:0;padding-left:18px}
+.draft{background:var(--grey-bg);border-radius:8px;padding:10px 12px;white-space:pre-wrap}
+.decide-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.due{font-size:13px;color:var(--mute)}.due.late{color:var(--red);font-weight:600}
+.empty{text-align:center;padding:36px 16px;border:2px dashed var(--line);border-radius:var(--r);color:var(--mute)}
+.empty h2{color:var(--ink);font-size:17px;margin-bottom:6px}
+.drop.over{border-color:var(--acc);background:var(--blue-bg)}
+.track{display:flex;margin:14px 0 18px;flex-wrap:wrap}
+.step{flex:1;min-width:90px;padding:8px 6px 0;border-top:4px solid var(--line);font-size:13px;color:var(--mute)}
+.step.done{border-top-color:var(--green);color:var(--ink)}.step.current{border-top-color:var(--acc);color:var(--ink);font-weight:600}
+.step small{display:block;font-weight:400;color:var(--mute)}
+.now{border:2px solid var(--acc)}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{padding:5px 0 5px 14px;border-left:2px solid var(--line)}
+.hist li.person{border-left-color:var(--acc)}.hist li.warn{border-left-color:var(--amber)}
+.hist time{display:block;color:var(--mute);font-size:12px}
+details summary{cursor:pointer;color:var(--mute)}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);width:min(560px,94vw);padding:20px}
+dialog::backdrop{background:rgba(10,15,25,.5)}
+.f label{display:block;margin:10px 0 3px;font-size:13px;font-weight:600}
+.f input,.f select,.f textarea{width:100%;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 10px}
+.f .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.filters select{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 10px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:5px 12px;cursor:pointer}
+.tabs button.on{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.err{color:var(--red);margin:8px 0}.ok{color:var(--green)}
+.banner{background:var(--amber-bg);color:var(--amber);padding:10px 14px;border-radius:8px;margin-bottom:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.kpi{background:var(--grey-bg);border-radius:8px;padding:10px 12px}.kpi b{font-size:19px;display:block}.kpi span{font-size:12px;color:var(--mute)}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.bar-f{height:8px;background:var(--grey-bg);border-radius:4px;overflow:hidden}.bar-f i{display:block;height:100%;background:var(--acc)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;z-index:50;max-width:90vw}
+@media (max-width:900px){.two-col{grid-template-columns:1fr}}
+@media (max-width:760px){.shell{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:8px}
+ aside .brand{padding:4px 8px}.grp,aside .bottom .autorow span{display:none}aside nav{display:flex;flex-wrap:wrap;gap:2px}aside .bottom{margin:0 0 0 auto;border:0;padding:0;display:flex;align-items:center}
+ main{padding:16px}.top{padding:10px 16px}.top input{max-width:none;flex-basis:100%}.f .two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <a class="brand" href="#/"><span class="logo" aria-hidden="true">B</span>BrandGuard</a>
+  <nav aria-label="Main">
+    <div class="grp">Overview</div>
+    <a href="#/" data-nav="dash">▦ Dashboard</a>
+    <div class="grp">Incidents</div>
+    <a href="#/incidents/decide" data-nav="decide">✋ Needs decision <span class="n" id="navDecide" hidden>0</span></a>
+    <a href="#/incidents/all" data-nav="all">☰ All incidents</a>
+    <div class="grp">Organization</div>
+    <a href="#/policies" data-nav="policies">☷ Policies</a>
+  </nav>
+  <div class="bottom">
+    <a href="#/testing" data-nav="testing" style="display:block;padding:8px 10px;color:var(--side-ink);text-decoration:none;font-size:13px">⚙ Testing</a>
+    <div class="autorow"><button class="sw" id="autoSw" role="switch" aria-checked="true" aria-label="Automation"></button><span id="autoLabel">Automation on</span></div>
+  </div>
+</aside>
+<div class="col">
+  <div class="top"><input id="q" type="search" placeholder="Search incidents" aria-label="Search incidents"><span class="sp"></span>
+    <button class="btn" id="bUp">Upload complaints</button><button class="btn pri" id="bRep">New incident</button></div>
+  <main id="app"></main>
+</div>
+</div>
+
+<dialog id="dReport"><form class="f" id="fReport" method="dialog">
+  <h2>Report an incident</h2>
+  <label for="r_text">What was posted or reported?</label>
+  <textarea id="r_text" rows="4" required></textarea>
+  <div class="two">
+    <div><label for="r_plat">Where did it appear?</label>
+      <select id="r_plat"><option>Instagram</option><option>X (Twitter)</option><option>Facebook</option><option>Reddit</option><option>Email</option><option>Review site</option><option>News site</option><option>Other</option></select></div>
+    <div><label for="r_auth">Who posted it?</label>
+      <select id="r_auth"><option>Identified Customer</option><option>Anonymous Account</option><option>Influencer</option><option>Journalist</option></select></div>
+  </div>
+  <div class="two">
+    <div><label for="r_reach">How far has it reached?</label>
+      <select id="r_reach"><option>Low</option><option>Medium</option><option>High</option></select></div>
+    <div><label for="r_ev">What do our records show?</label>
+      <select id="r_ev"><option value="">Not checked</option><option value="supports">Backs up the complaint</option><option value="contradicts">Contradicts the claim</option><option value="partial">Partly, can't confirm</option><option value="n/a">Nothing to check (opinion)</option></select></div>
+  </div>
+  <div class="two">
+    <div><label for="r_m1">Mentions in the last hour (optional)</label><input id="r_m1" type="number" min="0"></div>
+    <div><label for="r_m6">Mentions in the last 6 hours (optional)</label><input id="r_m6" type="number" min="0"></div>
+  </div>
+  <details style="margin-top:12px"><summary>Testing: fill with an example</summary><div class="decide-bar" id="presets"></div></details>
+  <div class="err" id="r_err" role="alert"></div>
+  <div class="decide-bar" style="justify-content:flex-end"><button class="btn" type="button" data-close>Cancel</button><button class="btn pri" type="submit">Submit incident</button></div>
+</form></dialog>
+
+<dialog id="dUpload"><form class="f" id="fUpload" method="dialog">
+  <h2>Upload complaints</h2>
+  <p class="meta" style="margin-top:6px;font-size:13px">Upload a spreadsheet (.csv or .xlsx) with one complaint per row. Each one is checked, scored and routed on arrival.</p>
+  <div class="empty drop" id="drop"><p style="margin:0 0 8px">Drop a file here or</p><input type="file" id="u_file" accept=".csv,.xlsx,.xlsm" aria-label="Choose a file"></div>
+  <p class="meta" style="font-size:13px"><a href="/api/template.csv">Download the template</a>. Only the complaint text is required. Anything missing is filled in or flagged for a person.</p>
+  <div class="err" id="u_err" role="alert"></div><div id="u_res"></div>
+  <div class="decide-bar" style="justify-content:flex-end"><button class="btn" type="button" data-close>Close</button><button class="btn pri" type="submit" id="u_go">Upload and process</button></div>
+</form></dialog>
+
+<script>
+const $=s=>document.querySelector(s), app=$('#app');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const J=async(u,b)=>{const r=await fetch(u,b===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});let d;try{d=await r.json()}catch(e){d={ok:false,error:'Unexpected response from the server.'}}return d};
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;t.setAttribute('role','status');document.body.append(t);setTimeout(()=>t.remove(),3500)}
+const BL={decide:'Needs your decision',escalated:'Escalated to a person',monitoring:'Reply sent, monitoring',resolved:'Resolved',all:'All'};
+const BS={decide:'Needs decision',escalated:'Escalated',monitoring:'Monitoring',resolved:'Resolved'};
+const ICON={decide:'✋',escalated:'⚠',monitoring:'◔',resolved:'✓'};
+const TAG={decide:'Action required',escalated:'Needs attention',monitoring:'In follow-up',resolved:'Closed'};
+let ROLES=[];
+const dur=m=>m<60?`${Math.max(m,1)} min`:m<1440?`${Math.round(m/60)} h`:`${Math.round(m/1440)} d`;
+const fmtDue=d=>d.overdue?`Overdue by ${dur(-d.due_in_min)}`:`Due in ${dur(d.due_in_min)}`;
+const when=s=>{try{return new Date(s).toLocaleString([],{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return s}};
+let view={bucket:'all',role:'',q:''}, timer=null, paused=false;
+
+async function refreshState(){const s=await J('/api/state');paused=s.paused;ROLES=s.roles||ROLES;$('#autoSw').setAttribute('aria-checked',String(!s.paused));$('#autoLabel').textContent=s.paused?'Automation paused':'Automation on';
+  const n=$('#navDecide');n.textContent=s.counts.decide;n.hidden=!s.counts.decide;return s}
+$('#autoSw').onclick=async()=>{await J('/api/pause',{on:!paused});await refreshState();toast(paused?'Automation paused. Nothing will be sent.':'Automation resumed.')};
+document.addEventListener('click',e=>{if(e.target.matches('[data-close]'))e.target.closest('dialog').close()});
+$('#bRep').onclick=()=>openReport();$('#bUp').onclick=()=>openUpload();
+$('#q').onchange=e=>{view.q=e.target.value;if(!(location.hash||'').startsWith('#/incidents'))location.hash='#/incidents/all';else route()};
+function route(){clearInterval(timer);const h=location.hash||'#/';
+  document.querySelectorAll('aside a[data-nav]').forEach(a=>a.classList.remove('on'));
+  const on=h==='#/'?'dash':h.startsWith('#/incidents')?(h.endsWith('decide')?'decide':'all'):h.startsWith('#/policies')?'policies':h.startsWith('#/testing')?'testing':h.startsWith('#/case')?'all':'dash';
+  document.querySelector(`aside a[data-nav="${on}"]`)?.classList.add('on');
+  refreshState();
+  if(h.startsWith('#/case/'))return casePage(decodeURIComponent(h.slice(7)));
+  if(h==='#/policies')return policies();
+  if(h==='#/testing')return testing();
+  if(h.startsWith('#/incidents')){view.bucket=h.split('/')[2]||'all';return incidents()}
+  dashboard()}
+window.addEventListener('hashchange',route);
+const idle=()=>{const a=document.activeElement;return !(a&&a.matches('input,textarea,select'))&&!document.querySelector('.edit-area:not(:empty)')&&!document.querySelector('dialog[open]')};
+
+// ----- decision card
+function decisionCard(it,full){
+  const d=it.decision;if(!d)return '';
+  const act=(a,l,cls='')=>`<button class="btn ${cls}" data-act="${a}" data-id="${esc(it.case_id)}">${l}</button>`;
+  let btns='';
+  if(d.kind==='response')btns=act('approve','Approve and send','pri')+act('edit','Edit first')+act('reject','Reject draft')+(d.next_role?act('escalate','Pass to '+esc(d.next_role)):'');
+  else if(d.kind==='handoff')btns=act('approve','Take ownership','pri')+(d.next_role?act('escalate','Pass up to '+esc(d.next_role)):'');
+  else btns=act('approve','Close case','pri')+act('reject','Keep monitoring');
+  const text=full?(it.text||it.excerpt):it.excerpt+(it.excerpt.length>=150?'…':'');
+  return `<div class="dc" data-card="${esc(it.case_id)}">
+   <div class="sec"><h3>The issue</h3><div class="quote">${esc(text)}</div></div>
+   ${it.impact?`<div class="sec"><h3>Why it matters</h3><ul class="plain">${it.impact.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+   <div class="sec"><h3>Recommended action</h3><b>${esc(d.rec_title)}</b><div class="meta" style="margin:2px 0 6px;font-size:13px">${esc(d.rec_detail)}</div>
+    ${d.draft?`<div class="draft">${esc(d.draft)}</div><div class="meta">${d.draft_ok?'Uses approved wording only.':'Wording needs a check.'}</div>`:''}
+    ${d.holding?`<div class="draft">${esc(d.holding)}</div><div class="meta">Suggested holding statement. It will not be posted for you.</div>`:''}</div>
+   <div class="sec"><h3>Your decision: ${esc(d.question)}</h3>
+    <div class="decide-bar">${btns}<span class="due ${d.overdue?'late':''}" data-role="${esc(d.role)}">For ${esc(d.role)}. ${fmtDue(d)}${d.reminded?' (reminder sent)':''}</span></div>
+    <div class="edit-area"></div></div></div>`}
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const id=b.dataset.id,act=b.dataset.act,card=b.closest('.dc'),area=card.querySelector('.edit-area'),role=card.querySelector('.due').dataset.role;
+  const send=async body=>{const r=await J(`/api/cases/${encodeURIComponent(id)}/decide`,{actor:role,...body});
+    if(!r.ok){area.innerHTML=`<div class="err" role="alert">${esc(r.error)}</div>`;return}toast(r.summary);route()};
+  if(act==='approve'||act==='escalate')return send({action:act});
+  if(act==='edit'){const t=card.querySelector('.draft')?.textContent||'';
+    area.innerHTML=`<div class="f"><label>Edit the reply</label><textarea rows="5">${esc(t)}</textarea><div class="decide-bar"><button class="btn pri" id="eo">Send edited reply</button><button class="btn" id="ec">Cancel</button></div></div>`;
+    area.querySelector('#ec').onclick=()=>area.innerHTML='';area.querySelector('#eo').onclick=()=>send({action:'edit',edited_text:area.querySelector('textarea').value});return}
+  if(act==='reject'){
+    area.innerHTML=`<div class="f"><label>Reason (optional)</label><input type="text"><div class="decide-bar"><button class="btn danger" id="ro">Confirm</button><button class="btn" id="rc">Cancel</button></div></div>`;
+    area.querySelector('#rc').onclick=()=>area.innerHTML='';area.querySelector('#ro').onclick=()=>send({action:'reject',notes:area.querySelector('input').value})}});
+
+// ----- dashboard
+function incRow(it){return `<div class="inc" data-open="${esc(it.case_id)}"><span class="dot ${it.bucket}"></span>
+  <div class="m"><b>${esc(it.headline)}</b><span class="meta">${esc(it.case_id)} • ${esc(it.platform)} • ${when(it.timestamp)}</span><span class="meta" style="display:block;white-space:normal">${esc(it.summary)}</span></div>
+  ${it.tier?`<span class="pill p-${it.tier}">${esc(it.priority)}</span>`:it.withheld?'<span class="pill flag">Needs review</span>':''}<span class="pill b-${it.bucket}">${esc(BS[it.bucket]||it.bucket)}</span><span class="chev">›</span></div>`}
+function openers(){app.querySelectorAll('[data-open]').forEach(el=>el.onclick=e=>{if(e.target.closest('button,textarea,input,.edit-area,.draft'))return;location.hash='#/case/'+encodeURIComponent(el.dataset.open)})}
+async function dashboard(){
+  const [d,a]=await Promise.all([J('/api/desk?bucket=all'),J('/api/activity')]);const c=d.counts;
+  if(c.all===0){app.innerHTML=`<div class="head"><div><h1>Dashboard</h1><p class="lede">Incidents are checked, scored and routed as soon as they arrive.</p></div></div>
+    <div class="empty drop" id="deskDrop"><h2>No incidents yet</h2><p>Drop a spreadsheet of complaints here, or add one by hand. Each one is checked and sent to the right person. You decide what goes public.</p>
+    <div class="decide-bar" style="justify-content:center"><button class="btn pri" id="e1">Upload complaints</button><button class="btn" id="e2">New incident</button></div></div>`;
+    $('#e1').onclick=openUpload;$('#e2').onclick=openReport;dropWire($('#deskDrop'));return}
+  const need=d.items.filter(i=>i.decision).slice(0,3), recent=[...d.items].sort((x,y)=>String(y.timestamp).localeCompare(String(x.timestamp))).slice(0,7);
+  app.innerHTML=`<div class="head"><div><h1>Dashboard</h1><p class="lede">${c.decide?`${c.decide} incident${c.decide>1?'s need':' needs'} your decision.`:'Nothing is waiting on you.'}</p></div></div>
+  <div class="stats">${['decide','escalated','monitoring','resolved'].map(k=>`<button class="stat" data-go="${k}"><div class="t"><span class="ico i-${k}">${ICON[k]}</span><span class="pill b-${k}">${TAG[k]}</span></div><b>${c[k]}</b><span class="l">${BL[k]}</span></button>`).join('')}</div>
+  ${need.length?`<div class="sh"><h2>Needs your decision</h2>${c.decide>need.length?`<a href="#/incidents/decide">View all ${c.decide}</a>`:''}</div>${need.map(it=>`<div class="card" data-open="${esc(it.case_id)}"><div class="row"><b>${esc(it.headline)}</b><span class="meta">${esc(it.case_id)} • ${esc(it.platform)}</span><span class="pill p-${it.tier||'S4'}">${esc(it.priority||'Review')}</span></div>${decisionCard(it,false)}</div>`).join('')}`:''}
+  <div class="two-col"><div><div class="sh"><h2>Recent incidents</h2><a href="#/incidents/all">View all</a></div><div class="panel">${recent.map(incRow).join('')}</div></div>
+   <div><div class="sh"><h2>Activity</h2></div><div class="panel feed">${a.items.length?a.items.map(x=>`<div class="it" data-open="${esc(x.case_id)}"><span class="dot ${x.kind}"></span><div><div>${esc(x.text)}</div><span class="meta">${esc(x.case_id)} • ${when(x.when)}</span></div></div>`).join(''):'<p class="meta">Nothing yet.</p>'}</div></div></div>`;
+  app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>location.hash='#/incidents/'+b.dataset.go);
+  openers();timer=setInterval(()=>{if(idle())dashboard()},8000)}
+
+// ----- incident list
+async function incidents(){
+  await refreshState();
+  const d=await J(`/api/desk?bucket=${view.bucket}&role=${encodeURIComponent(view.role)}&q=${encodeURIComponent(view.q)}`);const c=d.counts;
+  $('#q').value=view.q;
+  app.innerHTML=`<div class="head"><div><h1>${view.bucket==='decide'?'Needs your decision':'Incidents'}</h1><p class="lede">${d.total} shown</p></div></div>
+  <div class="tabs">${['all','decide','escalated','monitoring','resolved'].map(k=>`<button data-t="${k}" class="${view.bucket===k?'on':''}">${BL[k]} (${c[k]})</button>`).join('')}</div>
+  <div class="filters"><select id="role" aria-label="Assigned to"><option value="">Anyone</option>${ROLES.map(r=>`<option ${view.role===r?'selected':''}>${r}</option>`).join('')}</select>${view.q?`<button class="btn sm" id="clrq">Clear search “${esc(view.q)}”</button>`:''}</div>
+  ${d.items.length?d.items.map(it=>it.decision?`<div class="card" data-open="${esc(it.case_id)}"><div class="row"><div><b>${esc(it.headline)}</b> <span class="meta">${esc(it.case_id)} • ${esc(it.platform)} • ${esc(it.author)}</span></div><span class="pill p-${it.tier||'S4'}">${esc(it.priority||'Review')}</span></div>${it.flags.length?`<div style="margin-top:6px">${it.flags.map(f=>`<span class="pill flag">${esc(f)}</span>`).join(' ')}</div>`:''}${decisionCard(it,false)}</div>`:'').join('')+
+   `<div class="panel">${d.items.filter(i=>!i.decision).map(incRow).join('')}</div>`:'<div class="empty">Nothing here.</div>'}
+  ${d.total>d.items.length?`<p class="meta">Showing ${d.items.length} of ${d.total}. Use search or the filters to narrow the list.</p>`:''}`;
+  app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>location.hash='#/incidents/'+b.dataset.t);
+  $('#role').onchange=e=>{view.role=e.target.value;incidents()};$('#clrq')&&($('#clrq').onclick=()=>{view.q='';incidents()});
+  openers();timer=setInterval(()=>{if(idle())incidents()},8000)}
+
+// ----- dialogs
+const PRESETS=[
+ {n:'Delivery delay',t:'My order has not arrived after 9 days and support has stopped replying. Very disappointed.',a:'Identified Customer',r:'Low',e:'supports',m1:8,m6:40},
+ {n:'Safety allegation',t:'The heater I bought from you overheated and burned my kitchen counter. Someone could have been hurt.',a:'Identified Customer',r:'Medium',e:'partial',m1:30,m6:60},
+ {n:'False claim, going viral',t:'Brand secretly adds banned chemicals to its baby range! Share before they delete this.',a:'Influencer',r:'High',e:'contradicts',m1:400,m6:600},
+ {n:'Journalist enquiry',t:'We are writing about reports of unsafe batteries in your products. Please comment by 5pm.',a:'Journalist',r:'High',e:'partial',m1:20,m6:30}];
+function openReport(){$('#r_err').textContent='';$('#presets').innerHTML=PRESETS.map((p,i)=>`<button type="button" class="btn sm" data-p="${i}">${p.n}</button>`).join('');
+  $('#presets').onclick=e=>{const p=PRESETS[e.target.dataset.p];if(!p)return;$('#r_text').value=p.t;$('#r_auth').value=p.a;$('#r_reach').value=p.r;$('#r_ev').value=p.e;$('#r_m1').value=p.m1;$('#r_m6').value=p.m6};
+  $('#dReport').showModal()}
+$('#fReport').onsubmit=async e=>{e.preventDefault();const b={text:$('#r_text').value,platform:$('#r_plat').value,author_type:$('#r_auth').value,current_reach:$('#r_reach').value,
+  mentions_1h:$('#r_m1').value,mentions_6h:$('#r_m6').value,evidence:$('#r_ev').value};
+  const r=await J('/api/intake',b);if(!r.ok){$('#r_err').textContent=r.error;return}
+  $('#dReport').close();$('#fReport').reset();toast(r.summary);location.hash='#/case/'+encodeURIComponent(r.case_id);route()};
+function openUpload(){$('#u_err').textContent='';$('#u_res').innerHTML='';$('#u_file').value='';$('#dUpload').showModal();dropWire($('#drop'))}
+function dropWire(el){if(!el||el._w)return;el._w=1;['dragover','dragenter'].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.add('over')}));
+  ['dragleave','drop'].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.remove('over')}));
+  el.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(!f)return;if(!$('#dUpload').open)openUpload();const dt=new DataTransfer();dt.items.add(f);$('#u_file').files=dt.files})}
+$('#fUpload').onsubmit=async e=>{e.preventDefault();const f=$('#u_file').files[0];$('#u_err').textContent='';if(!f){$('#u_err').textContent='Choose a file first.';return}
+  const go=$('#u_go');go.disabled=true;go.textContent='Processing…';const fd=new FormData();fd.append('file',f);
+  let r;try{r=await (await fetch('/api/upload',{method:'POST',body:fd})).json()}catch(x){r={ok:false,error:'Upload failed.'}}
+  go.disabled=false;go.textContent='Upload and process';
+  if(!r.ok){$('#u_err').textContent=r.error;return}
+  const c=r.counts;$('#u_res').innerHTML=`<p class="ok"><b>${r.processed} incidents processed.</b></p><ul class="plain"><li>${c.decide} need a decision</li><li>${c.escalated} escalated to a person</li><li>${c.monitoring} replied to or monitoring</li>${c.duplicate?`<li>${c.duplicate} merged as duplicates</li>`:''}</ul>
+   ${r.problem_total?`<p class="err">${r.problem_total} row${r.problem_total>1?'s':''} not accepted:</p><ul class="plain">${r.problems.slice(0,8).map(p=>`<li>Row ${p.row}: ${esc(p.reasons.join('; '))}</li>`).join('')}</ul>`:''}`;
+  refreshState();if(['','#/'].includes(location.hash))dashboard()};
+
+// ----- case page
+async function casePage(id){
+  const d=await J('/api/cases/'+encodeURIComponent(id));
+  if(!d.ok){app.innerHTML=`<p><a href="#/incidents/all">← Incidents</a></p><div class="empty">${esc(d.error)}</div>`;return}
+  const r=d.row;r.text=d.text;r.impact=d.impact;const fu=d.follow_up;let now='';
+  if(r.decision)now=`<div class="card now"><h2>What needs to happen now</h2>${decisionCard(r,true)}</div>`;
+  else if(r.bucket==='resolved')now=`<div class="card"><h2>Outcome</h2><p class="ok" style="margin:6px 0 0"><b>${esc(r.summary)}</b></p></div>`;
+  else if(fu.owner_can_close)now=`<div class="card now"><h2>What needs to happen now</h2><p>${esc(r.summary)} Once it's sorted out, record what shows it's resolved.</p>
+    <div class="f"><label for="ev">What shows this is resolved?</label><input id="ev" type="text"><div class="err" id="ev_e"></div><div class="decide-bar"><button class="btn pri" id="resolve">Mark as resolved</button></div></div></div>`;
+  else if(fu.can_check)now=`<div class="card now"><h2>What needs to happen now</h2><p>${esc(r.summary)} Record a follow-up check. When nothing new has appeared for the whole window (${fu.window_hours} hours), the case closes.</p>
+    <div class="f"><div class="two"><div><label for="fm1">Mentions in the last hour</label><input id="fm1" type="number" min="0"></div><div><label for="fm6">Mentions in the last 6 hours</label><input id="fm6" type="number" min="0"></div></div>
+    <label for="fr">Reach now</label><select id="fr"><option>Low</option><option>Medium</option><option>High</option></select>
+    <div class="err" id="fu_e"></div><div class="decide-bar"><button class="btn pri" id="check">Record check and close if ready</button></div></div></div>`;
+  else now=`<div class="card"><h2>Status</h2><p style="margin:6px 0 0">${esc(r.summary)}</p></div>`;
+  const steps=d.phases.steps;
+  app.innerHTML=`<p><a href="#/incidents/all">← Incidents</a></p>
+  <div class="head"><div><h1>${esc(r.headline)}</h1><div class="meta">${esc(d.meta.platform)} • ${esc(d.meta.author)} • ${esc(r.case_id)} • received ${when(d.meta.received)}</div></div>
+   <div>${r.tier?`<span class="pill p-${r.tier}">${esc(r.priority)}</span> `:''}<span class="pill b-${r.bucket}">${esc(BL[r.bucket]||r.bucket)}</span> ${r.flags.map(f=>`<span class="pill flag">${esc(f)}</span>`).join(' ')}</div></div>
+  ${steps.length?`<div class="track" aria-label="Progress">${steps.map(s=>`<div class="step ${s.state}">${s.state==='done'?'✓ ':''}${s.name}<small>${esc(s.sub)}</small></div>`).join('')}</div>`:`<p class="meta">${esc(d.phases.note||'')}</p>`}
+  ${now}
+  <div class="card"><h2>What we found</h2><div class="quote">${esc(d.text)}</div>
+   <ul class="plain">${d.impact.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+   ${d.overrides.length?`<p class="meta">${d.overrides.map(esc).join(' ')}</p>`:''}
+   ${d.factors.length?`<details><summary>How the priority was worked out (score ${d.raw_score}/100)</summary><table>${d.factors.map(f=>`<tr><td>${f.label}</td><td style="width:40%"><div class="bar-f"><i style="width:${(f.points/f.max)*100}%"></i></div></td><td>${f.points}/${f.max}</td></tr>`).join('')}</table></details>`:''}
+   ${d.withheld?'<p class="meta">The priority was held back so a person can review it first.</p>':''}</div>
+  ${d.no_draft?`<div class="card"><h2>Public reply</h2><p style="margin:6px 0 0">No reply is drafted for safety or legal allegations. A person writes any public response.</p></div>`:''}
+  ${d.sent.length?`<div class="card"><h2>Replies sent</h2>${d.sent.map(s=>`<div class="draft" style="margin-top:8px">${esc(s.text)}</div><div class="meta">${esc(s.channel)}, ${when(s.sim_time)}${s.mode==='auto'?' (automatic, low risk)':''}</div>`).join('')}</div>`:''}
+  ${d.drafts.length>1?`<div class="card"><details><summary>Reply versions (${d.drafts.length})</summary>${d.drafts.map(x=>`<p class="meta" style="margin-bottom:2px">Version ${x.version}, ${esc(x.status)}${x.reason?`: ${esc(x.reason)}`:''}</p><div class="draft">${esc(x.text)}</div>`).join('')}</details></div>`:''}
+  ${d.children.length?`<div class="card"><h2>Later updates</h2>${d.children.map(k=>`<p style="margin:8px 0 0"><b>${esc(k.event)}</b> <span class="meta">${when(k.when)}</span><br>${esc(k.text)}</p>`).join('')}</div>`:''}
+  <div class="card"><h2>History</h2><ul class="hist" style="margin-top:8px">${d.history.map(h=>`<li class="${h.kind}"><time>${when(h.when)}</time>${esc(h.text)}</li>`).join('')}</ul>
+   <details style="margin-top:10px"><summary>Technical log</summary><pre style="overflow:auto;font-size:12px">${esc(JSON.stringify(d.technical,null,1))}</pre></details></div>`;
+  $('#resolve')&&($('#resolve').onclick=async()=>{const r2=await J(`/api/cases/${encodeURIComponent(id)}/resolve`,{evidence:$('#ev').value,actor:r.owner||'Case owner'});if(!r2.ok){$('#ev_e').textContent=r2.error;return}toast('Marked as resolved.');route()});
+  $('#check')&&($('#check').onclick=async()=>{const r2=await J(`/api/cases/${encodeURIComponent(id)}/followup`,{mentions_1h:$('#fm1').value,mentions_6h:$('#fm6').value,reach:$('#fr').value});if(!r2.ok){$('#fu_e').textContent=r2.error;return}toast(r2.message);route()})}
+
+// ----- policies
+async function policies(){
+  const k=await J('/api/kb');
+  app.innerHTML=`<div class="head"><div><h1>Policies</h1><p class="lede">The rules every incident follows. The system applies them; it can't change them.</p></div></div>
+  <div class="card"><h2>Who decides, and how fast</h2><table style="margin-top:8px"><tr><th>Priority</th><th>Decision by</th><th>Respond within</th></tr>${Object.entries(k.matrix).map(([t,m])=>`<tr><td><span class="pill p-${t}">${m.label}</span></td><td>${esc(m.approver||'No approval needed (approved template, audited weekly)')}</td><td>${dur(m.sla_minutes)}</td></tr>`).join('')}</table>
+   <p class="meta">If an approver doesn't respond in time, they get a reminder, then the case moves to the next person. A draft is never sent without approval.</p></div>
+  <div class="card"><h2>Always handled by a person</h2><ul class="plain" style="margin-top:8px"><li>Safety or legal allegations: no public text is drafted.</li><li>Critical cases: the system suggests only.</li><li>Unverified claims: no factual statement is made in public.</li><li>Low confidence (below ${Math.round(k.confidence_threshold*100)}%): a person reads it first.</li><li>Records unavailable, suspected coordinated activity, or instructions aimed at the AI: a person decides.</li></ul></div>
+  <div class="card"><h2>Approved facts</h2><ul class="plain" style="margin-top:8px">${Object.values(k.facts).map(f=>`<li>${esc(typeof f==='string'?f:(f.text||f.fact||JSON.stringify(f)))}</li>`).join('')}</ul></div>
+  <div class="card"><h2>Approved reply templates</h2>${Object.values(k.templates).map(t=>`<details style="margin-top:6px"><summary>${esc(t.name)}${t.auto_send?' (can send automatically)':''}</summary><div class="draft">${t.sentences.map(esc).join(' ')}</div></details>`).join('')}</div>`}
+
+// ----- testing
+async function testing(){
+  const s=await refreshState();
+  app.innerHTML=`<div class="head"><h1>Testing</h1></div><div class="banner">This area is for demos and evaluation. Simulated time and sample incidents are not real activity.</div>
+  <div class="card"><h2>Sample incidents</h2><p class="meta">${s.dataset_loaded?`${s.feed_cursor} of ${s.dataset_rows} sample incidents loaded.`:"The sample dataset wasn't found. Set BG_DATASET to its path."}</p>
+   <div class="decide-bar"><button class="btn" data-feed="5">Load 5</button><button class="btn" data-feed="25">Load 25</button><button class="btn" data-feed="100">Load 100</button></div></div>
+  <div class="card"><h2>Evaluation</h2><p class="meta">Process all ${s.dataset_rows||400} sample incidents from scratch and compare the results with the expected outcomes.</p>
+   <div class="decide-bar"><button class="btn" id="runAll">Run full evaluation</button><a class="btn" href="/api/export">Download results (Excel)</a></div><div id="kp"></div></div>
+  <div class="card"><h2>Simulated time</h2><p class="meta">Now: ${when(s.clock)}. Move time forward to trigger approval reminders and follow-up windows.</p>
+   <div class="decide-bar"><button class="btn" data-adv='{"minutes":30}'>+30 minutes</button><button class="btn" data-adv='{"hours":1}'>+1 hour</button><button class="btn" data-adv='{"hours":24}'>+1 day</button></div></div>
+  <div class="card"><h2>Reset</h2><p class="meta">Removes every incident, decision and log entry.</p><button class="btn danger" id="clear">Clear all incidents</button></div>`;
+  app.querySelectorAll('[data-feed]').forEach(b=>b.onclick=async()=>{b.disabled=true;const r=await J('/api/feed',{n:+b.dataset.feed});toast(r.ok?`Loaded ${r.loaded} incidents.`:r.error);testing()});
+  app.querySelectorAll('[data-adv]').forEach(b=>b.onclick=async()=>{const r=await J('/api/clock',JSON.parse(b.dataset.adv));toast(r.ok?'Time moved forward.':r.error);testing()});
+  $('#runAll').onclick=async()=>{if(!confirm('This replaces all current incidents. Continue?'))return;$('#runAll').disabled=true;$('#runAll').textContent='Running…';const r=await J('/api/simulate',{});toast(r.ok?`Processed ${r.cases} incidents.`:r.error);await testing()};
+  $('#clear').onclick=async()=>{if(!confirm("Clear all incidents? This can't be undone."))return;await J('/api/reset',{});toast('All incidents cleared.');testing()};
+  kpis()}
+async function kpis(){
+  const el=$('#kp');if(!el)return;const r=await J('/api/kpis');if(!r.ok||r.empty||!r.kpis){el.innerHTML='';return}
+  const items=Object.entries(r.kpis).filter(([k,v])=>typeof v==='number'||typeof v==='string').slice(0,12);
+  el.innerHTML=`<div class="kpis" style="margin-top:12px">${items.map(([k,v])=>`<div class="kpi"><b>${typeof v==='number'&&v<=1&&v>=0&&/rate|accuracy|precision|recall|pct/i.test(k)?(v*100).toFixed(1)+'%':esc(typeof v==='number'?Math.round(v*100)/100:v)}</b><span>${esc(k.replace(/_/g,' '))}</span></div>`).join('')}</div>`}
+
+route();
+</script>
+</body>
+</html>

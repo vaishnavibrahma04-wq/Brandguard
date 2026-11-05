@@ -20,9 +20,9 @@ from brandguard.simulation import load_dataset, raw_from_row, run_dataset
 from brandguard.store import Store
 from brandguard.verification import SimulatedEvidenceConnector
 
-DATASET = os.environ.get("BG_DATASET", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "incidents.xlsx"))
+DATASET = os.environ.get("BG_DATASET", os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data", "incidents.xlsx"))
 DB = os.environ.get("BG_DB", os.path.join(os.environ.get("TMPDIR", "/tmp"), "brandguard.db"))
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__, static_folder="Static")
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 LOCK = threading.RLock()
 STATE = {"orch": None, "df": None, "cursor": 0}
@@ -372,7 +372,7 @@ def phases(c) -> dict:
 # --------------------------------------------------------------------------- pages and state
 @app.get("/")
 def index():
-    return send_from_directory("static", "index.html")
+    return send_from_directory("Static", "index.html")
 
 
 @app.get("/api/state")
